@@ -23,7 +23,13 @@ public class ClienteServicio {
         repoClientes.guardar(cliente);
     }
 
-    public void modificar(Cliente cliente) {
+    public void modificar(int id, Cliente datos) {
+        Cliente cliente = buscarPorId(id);
+        cliente.setDni(datos.getDni());
+        cliente.setNombre(datos.getNombre());
+        cliente.setApellido(datos.getApellido());
+        cliente.setSaldo(datos.getSaldo());
+
         validar(cliente);
         controlarDniRepetido(cliente);
         repoClientes.guardar(cliente);

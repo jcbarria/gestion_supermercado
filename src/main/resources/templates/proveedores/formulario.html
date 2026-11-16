@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: head('Nuevo proveedor')}"></head>
+<body>
+<nav th:replace="~{fragmentos :: navbar}"></nav>
+
+<main class="container py-4">
+    <h1 class="h3 mb-3">Nuevo proveedor</h1>
+
+    <div th:replace="~{fragmentos :: mensajes}"></div>
+
+    <form th:action="@{/proveedores}" th:object="${proveedor}" method="post"
+          class="card card-body" style="max-width: 600px">
+        <div class="mb-3">
+            <label for="dni" class="form-label">DNI</label>
+            <input type="number" th:field="*{dni}" class="form-control" min="1" required>
+        </div>
+        <div class="row">
+            <div class="col mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" th:field="*{nombre}" class="form-control" required>
+            </div>
+            <div class="col mb-3">
+                <label for="apellido" class="form-label">Apellido</label>
+                <input type="text" th:field="*{apellido}" class="form-control" required>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="empresa" class="form-label">Empresa</label>
+            <input type="text" th:field="*{empresa}" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="cuit" class="form-label">CUIT</label>
+            <input type="text" th:field="*{cuit}" class="form-control" required>
+        </div>
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <a href="/proveedores" class="btn btn-outline-secondary">Cancelar</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>
