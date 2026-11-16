@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="
+                 https://jakarta.ee/xml/ns/persistence
+                 https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
+             version="3.0">
+
+    <persistence-unit name="Programacion2">
+
+        <class>com.supermercado.dominio.Persona</class>
+        <class>com.supermercado.dominio.Cliente</class>
+        <class>com.supermercado.dominio.Proveedor</class>
+        <class>com.supermercado.dominio.Producto</class>
+        <class>com.supermercado.dominio.Ropa</class>
+        <class>com.supermercado.dominio.Alimento</class>
+        <class>com.supermercado.dominio.Electronica</class>
+        <class>com.supermercado.dominio.Venta</class>
+        <exclude-unlisted-classes/>
+
+        <properties>
+
+            <property
+                name="javax.jdo.option.ConnectionDriverName"
+                value="com.mysql.cj.jdbc.Driver"/>
+
+            <property
+                name="javax.jdo.option.ConnectionURL"
+                value="jdbc:mysql://localhost:3306/supermercado"/>
+
+            <property
+                name="javax.jdo.option.ConnectionUserName"
+                value="programacion2"/>
+
+            <property
+                name="javax.jdo.option.ConnectionPassword"
+                value="Prog2026"/>
+
+            <property
+                name="datanucleus.schema.autoCreateAll"
+                value="true"/>
+
+        </properties>
+
+    </persistence-unit>
+
+</persistence>

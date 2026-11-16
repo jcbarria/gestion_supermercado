@@ -1,0 +1,50 @@
+package com.supermercado.dominio;
+
+import java.math.BigDecimal;
+import javax.jdo.annotations.PersistenceCapable;
+
+@PersistenceCapable(detachable = "true")
+public class Electronica extends Producto {
+    private String marca;
+    private int garantia;
+
+    public Electronica(String nombre, BigDecimal precio, int stock, int stockMinimo, String marca, int garantia) {
+        super(nombre, precio, stock, stockMinimo);
+        this.marca = marca;
+        this.garantia = garantia;
+    }
+
+    public Electronica() {
+    }
+
+    @Override
+    public void vender(int cantidad) {
+        stock = stock - cantidad;
+    }
+
+    @Override
+    public void reponer(int cantidad) {
+        stock = stock + cantidad;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public int getGarantia() {
+        return garantia;
+    }
+
+    public void setGarantia(int garantia) {
+        this.garantia = garantia;
+    }
+
+    @Override
+    public String getCategoria() {
+        return "Electronica";
+    }
+}
