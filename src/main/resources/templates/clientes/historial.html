@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: head('Historial de compras')}"></head>
+<body>
+<nav th:replace="~{fragmentos :: navbar}"></nav>
+
+<main class="container py-4">
+    <h1 class="h3 mb-1">Historial de compras</h1>
+    <p class="text-muted mb-3"
+       th:text="${cliente.nombre + ' ' + cliente.apellido + ' | DNI ' + cliente.dni + ' | Saldo $' + cliente.saldo}">
+        Ana Perez
+    </p>
+
+    <table class="table table-striped align-middle" th:if="${!ventas.isEmpty()}">
+        <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Producto</th>
+            <th class="text-end">Cantidad</th>
+            <th class="text-end">Precio unitario</th>
+            <th class="text-end">Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="v : ${ventas}">
+            <td th:text="${v.fecha}">2026-11-16</td>
+            <td th:text="${v.producto.nombre}">Leche entera</td>
+            <td class="text-end" th:text="${v.cantidad}">3</td>
+            <td class="text-end" th:text="${'$' + v.precioUnitario}">$1500.50</td>
+            <td class="text-end" th:text="${'$' + v.total}">$4501.50</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <p th:if="${ventas.isEmpty()}" class="text-muted">Este cliente todavía no hizo compras.</p>
+
+    <a href="/clientes" class="btn btn-outline-secondary">Volver a clientes</a>
+</main>
+</body>
+</html>
