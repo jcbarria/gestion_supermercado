@@ -1,58 +1,49 @@
-# Gestión de stock de un supermercado
+# Gestion de stock - Supermercado
 
-Proyecto integrador de Programación II.
+Proyecto integrador de Programacion II.
 
 ## Integrantes
 
 - Juan Barria
-- Martín Eduardo Yurquina
+- Martin Eduardo Yurquina
 - Franco Rivas
 
-## Descripción
+## De que se trata
 
-Aplicación web para que un supermercado gestione sus productos, clientes y proveedores, registre ventas con control de stock y saldo, y consulte su catálogo.
+Es una aplicacion web para manejar el stock de un supermercado. Se pueden cargar productos (alimentos, ropa y electronica), clientes y proveedores, y registrar ventas controlando que haya stock y que al cliente le alcance el saldo.
 
-> Estado: en desarrollo. Por ahora está implementado el modelo de dominio con persistencia en MySQL mediante DataNucleus JDO.
+Partimos del proyecto de la tienda que hicimos en el primer cuatrimestre y lo pasamos a una aplicacion web con base de datos.
 
-## Funcionalidades
+## Que se puede hacer
 
-1. ABM de productos (ropa, alimento y electrónica), con proveedor obligatorio.
-2. ABM de clientes.
-3. Alta y listado de proveedores.
-4. Consulta de ventas e historial de compras de cada cliente.
-5. Búsqueda de productos por nombre, filtro por categoría y alerta de stock bajo.
-6. Venta: valida cantidad, stock y saldo, y registra la venta en una transacción.
-7. Reposición de stock.
+- Alta, baja, modificacion y listado de productos. Cada producto tiene que tener un proveedor.
+- Alta, baja, modificacion y listado de clientes.
+- Alta y listado de proveedores.
+- Registrar ventas. Si no hay stock o el cliente no tiene saldo, la venta no se hace y se muestra el error.
+- Reponer stock de un producto.
+- Buscar productos por nombre, filtrarlos por categoria y ver los que tienen stock bajo.
+- Ver el historial de compras de cada cliente.
 
-No se puede eliminar un producto o un cliente con ventas, ni un proveedor con productos.
+No se puede borrar un producto o un cliente que tenga ventas, ni un proveedor que tenga productos, para no dejar datos colgados.
 
-## Tecnologías
+## Tecnologias
 
-Java 17, Maven, DataNucleus JDO, MySQL 8. Próximamente: Spring Boot, Thymeleaf y Bootstrap.
+Java 17, Maven, DataNucleus JDO, MySQL, Spring Boot, Thymeleaf y Bootstrap.
 
-## Cómo ejecutarlo
+## Como correrlo
 
-### Requisitos
+Hace falta tener instalado Java 17, Maven y MySQL.
 
-- Java 17 (JDK)
-- Maven
-- MySQL 8
+1. Clonar el repo:
 
-### Pasos
-
-1. Clonar el repositorio:
-   ```
    git clone https://github.com/jcbarria/gestion_supermercado.git
-   ```
-2. Crear la base de datos: abrir `database/crear_base.sql` en MySQL Workbench y ejecutarlo con un usuario administrador (por ejemplo `root`). Crea la base `supermercado` y el usuario `programacion2`.
-3. Compilar y procesar las clases persistentes:
-   ```
-   mvn clean process-classes
-   ```
-4. Ejecutar la clase `com.supermercado.app.Main`.
 
-Las tablas se crean automáticamente la primera vez que se ejecuta el programa.
+2. Crear la base: abrir el archivo `database/crear_base.sql` en MySQL Workbench y ejecutarlo con el usuario root. Eso crea la base `supermercado` y el usuario que usa la aplicacion. Las tablas se crean solas cuando arranca el programa.
 
-### Credenciales
+3. Desde la carpeta del proyecto, ejecutar:
 
-El usuario `programacion2` con contraseña `Prog2026` es un usuario de prueba creado por el script, con permisos solo sobre la base `supermercado` y acceso solo desde `localhost`. En un entorno real se reemplazaría por credenciales propias.
+   mvn spring-boot:run
+
+4. Entrar a http://localhost:8080 desde el navegador.
+
+El usuario de la base es `programacion2` y la contraseña `Prog2026`. Es un usuario de prueba que crea el script, solo tiene permisos sobre la base del proyecto.
