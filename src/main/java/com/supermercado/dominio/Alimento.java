@@ -1,9 +1,12 @@
 package com.supermercado.dominio;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import javax.jdo.annotations.Inheritance;
+import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 
 @PersistenceCapable(detachable = "true")
+@Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)
 
 public class Alimento extends Producto {
     private LocalDate vencimiento; 

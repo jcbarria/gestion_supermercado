@@ -1,9 +1,12 @@
 package com.supermercado.dominio;
 
 import java.math.BigDecimal;
+import javax.jdo.annotations.Inheritance;
+import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 
 @PersistenceCapable(detachable = "true")
+@Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)
 public class Ropa extends Producto {
     private String talle;
     private String temporada;

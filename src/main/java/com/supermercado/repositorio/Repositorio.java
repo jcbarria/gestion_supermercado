@@ -2,7 +2,8 @@ package com.supermercado.repositorio;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.HashMap;
+import java.util.Map;
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
@@ -11,11 +12,13 @@ import javax.jdo.Transaction;
 
 public class Repositorio<T> implements IRepositorio<T> {
 
-    private final PersistenceManagerFactory pmf;
+    private static final Map<String, PersistenceManagerFactory> fabricas = new HashMap<>();
+
+    protected final PersistenceManagerFactory pmf;
 
     public Repositorio(String persistenceUnit) {
-
-        this.pmf = JDOHelper.getPersistenceManagerFactory(persistenceUnit);
+        this.pmf = fabricas.computeIfAbsent(persistenceUnit,
+            unidad -> JDOHelper.getPersistenceManagerFactory(unidad));
     }
 
     @Override

@@ -9,9 +9,12 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import javax.jdo.annotations.Column;
+import javax.jdo.annotations.Discriminator;
+import javax.jdo.annotations.DiscriminatorStrategy;
 
 @PersistenceCapable(detachable = "true")
-@Inheritance(strategy = InheritanceStrategy.COMPLETE_TABLE)
+@Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
+@Discriminator(strategy = DiscriminatorStrategy.CLASS_NAME, column = "TIPO")
 
 public abstract class Producto implements Serializable, iComercializable {
        

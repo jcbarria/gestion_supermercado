@@ -40,6 +40,9 @@
             <property
                 name="datanucleus.schema.autoCreateAll"
                 value="true"/>
+            <property
+                name="datanucleus.schema.generateDatabase.mode"
+                value="create"/>
 
         </properties>
 
