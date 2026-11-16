@@ -240,4 +240,51 @@ public class Repositorio<T> implements IRepositorio<T> {
 
     }
 
+    @Override
+    public void eliminar(Class<T> clase, int id) {
+        PersistenceManager pm = pmf.getPersistenceManager();
+        Transaction tx = pm.currentTransaction();
+
+        try {
+            tx.begin();
+            T objeto = pm.getObjectById(clase, id);
+            pm.deletePersistent(objeto);
+            tx.commit();
+        } catch (RuntimeException e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            throw e;
+        } finally {
+            pm.close();
+        }
+    }
+
+    @Override
+    public List<T> buscarPorNombre(Class<T> clase, String texto) {
+        PersistenceManager pm = pmf.getPersistenceManager();
+        pm.getFetchPlan().setMaxFetchDepth(2);
+        Transaction tx = pm.currentTransaction();
+        Query<T> query = null;
+
+        try {
+            tx.begin();
+            query = pm.newQuery(clase, "nombre.toLowerCase().indexOf(:texto) >= 0");
+            List<T> resultados = query.setParameters(texto.toLowerCase()).executeList();
+            List<T> separados = new ArrayList<>(pm.detachCopyAll(resultados));
+            tx.commit();
+            return separados;
+        } catch (RuntimeException e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            throw e;
+        } finally {
+            if (query != null) {
+                query.closeAll();
+            }
+            pm.close();
+        }
+    }
+
 }

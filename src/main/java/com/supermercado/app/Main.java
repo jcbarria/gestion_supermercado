@@ -11,8 +11,9 @@ import com.supermercado.repositorio.Repositorio;
 
 public class Main {
     public static void main(String[] args) {
-        //guardarAlimento();
-        listarAlimentos();
+        // guardarAlimento();
+        // listarAlimentos();
+        buscarProductos();
     }
 
     private static void guardarAlimento() {
@@ -35,6 +36,16 @@ public class Main {
         for (Alimento a : alimentos) {
             a.mostrarInfo();
             System.out.println("  Proveedor: " + a.getProveedor().getEmpresa());
+        }
+    }
+
+    private static void buscarProductos() {
+        IRepositorio<Alimento> repo = new Repositorio<>("Programacion2");
+
+        List<Alimento> encontrados = repo.buscarPorNombre(Alimento.class, "LECH");
+        System.out.println("Encontrados: " + encontrados.size());
+        for (Alimento a : encontrados) {
+            a.mostrarInfo();
         }
     }
 }

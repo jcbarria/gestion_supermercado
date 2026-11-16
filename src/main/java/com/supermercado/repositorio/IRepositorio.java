@@ -9,5 +9,10 @@ public interface IRepositorio<T> {
     void guardar(List<T> objetos);
 
     T consultar(Class<T> clase, int id);
-    List <T> listar (Class <T> clase);
+
+    List<T> listar(Class<T> clase);
+
+    void eliminar(Class<T> clase, int id);
+
+    List<T> buscarPorNombre(Class<T> clase, String texto);
 }
