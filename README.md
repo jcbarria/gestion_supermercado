@@ -1,4 +1,4 @@
-# Gestion de stock - Supermercado
+# Gestion de stock - Supermercado - CHANGUITO
 
 Proyecto integrador de Programacion II.
 
@@ -10,7 +10,7 @@ Proyecto integrador de Programacion II.
 
 ## De que se trata
 
-Es una aplicacion web para manejar el stock de un supermercado. Se pueden cargar productos (alimentos, ropa y electronica), clientes y proveedores, y registrar ventas controlando que haya stock y que al cliente le alcance el saldo.
+Es una aplicacion web cuyo nombre es "CHANGUITO", desarrollada para manejar el stock de un supermercado. Se pueden cargar productos (alimentos, ropa y electronica), clientes y proveedores, y registrar ventas controlando que haya stock y que al cliente le alcance el saldo.
 
 Partimos del proyecto de la tienda que hicimos en el primer cuatrimestre y lo pasamos a una aplicacion web con base de datos.
 
