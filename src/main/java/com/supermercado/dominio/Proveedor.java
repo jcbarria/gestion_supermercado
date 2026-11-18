@@ -2,6 +2,9 @@ package com.supermercado.dominio;
 
 import javax.jdo.annotations.PersistenceCapable;
 
+// CAPA DE DOMINIO
+// Proveedor hereda de Persona y agrega empresa y CUIT.
+// Un proveedor abastece muchos productos (Proveedor 1 a N Producto, la FK esta en PRODUCTO).
 @PersistenceCapable(detachable = "true")
 public class Proveedor extends Persona {
     private String empresa;
@@ -13,6 +16,7 @@ public class Proveedor extends Persona {
         this.cuit = cuit;
     }
 
+    // Constructor vacio para JDO y para los formularios.
     public Proveedor() {
     }
 

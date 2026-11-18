@@ -5,6 +5,8 @@ import javax.jdo.annotations.Inheritance;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 
+// CAPA DE DOMINIO
+// Subclase de Producto. Se guarda en la tabla PRODUCTO, columnas TALLE y TEMPORADA.
 @PersistenceCapable(detachable = "true")
 @Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)
 public class Ropa extends Producto {
@@ -17,6 +19,7 @@ public class Ropa extends Producto {
         this.temporada = temporada;
     }
 
+    // Constructor vacio para JDO.
     public Ropa() {
     }
 
@@ -46,6 +49,7 @@ public class Ropa extends Producto {
         this.temporada = temporada;
     }
 
+    // Coincide con el valor que usan el filtro y el formulario.
     @Override
     public String getCategoria() {
         return "Ropa";

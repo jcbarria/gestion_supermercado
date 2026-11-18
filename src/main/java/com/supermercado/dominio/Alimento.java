@@ -5,10 +5,14 @@ import javax.jdo.annotations.Inheritance;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 
+// CAPA DE DOMINIO
+// Subclase de Producto. SUPERCLASS_TABLE: se guarda en la tabla PRODUCTO,
+// en las columnas VENCIMIENTO y REFRIGERADO (en las filas de otros tipos quedan en NULL).
 @PersistenceCapable(detachable = "true")
 @Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)
 
 public class Alimento extends Producto {
+    // LocalDate: solo fecha, sin hora.
     private LocalDate vencimiento; 
     private boolean refrigerado; 
     
@@ -17,8 +21,10 @@ public class Alimento extends Producto {
         this.vencimiento= vencimiento; 
         this.refrigerado= refrigerado; 
     }
+    // Constructor vacio para JDO.
     public Alimento() {
     }
+       // Resta stock. Que haya stock suficiente lo controla VentaServicio.
        @Override
     public void vender(int cantidad) {
         stock = stock - cantidad;
@@ -42,6 +48,7 @@ public class Alimento extends Producto {
         this.refrigerado = refrigerado;
     }
 
+    // Coincide con el valor que usan el filtro y el formulario.
     @Override
     public String getCategoria() {
         return "Alimento";

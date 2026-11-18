@@ -11,6 +11,9 @@ import com.supermercado.dominio.Producto;
 import com.supermercado.dominio.Ropa;
 import com.supermercado.servicio.NegocioException;
 
+// Objeto del formulario de productos (no es una entidad, no se guarda en la base).
+// Hace falta porque Producto es abstracta y Spring no puede crearla para cargarle los datos.
+// Tiene los campos de todas las categorias y despues se convierte en la subclase que corresponde.
 public class ProductoFormulario {
 
     private String tipo;
@@ -18,18 +21,22 @@ public class ProductoFormulario {
     private BigDecimal precio;
     private int stock;
     private int stockMinimo;
+    // Integer y no int: si no se elige proveedor llega vacio (null), y un int no acepta null.
     private Integer proveedorId;
 
     private String talle;
     private String temporada;
 
     private String marca;
+    // Integer por lo mismo: el campo puede quedar vacio.
     private Integer garantia;
 
+    // Formato en el que llega la fecha del input type="date" (por ejemplo 2026-12-01).
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate vencimiento;
     private boolean refrigerado;
 
+    // Alta: crea la subclase segun el tipo elegido.
     public Producto crearProducto() {
         if ("Alimento".equals(tipo)) {
             return new Alimento(nombre, precio, stock, stockMinimo, vencimiento, refrigerado);
@@ -43,6 +50,8 @@ public class ProductoFormulario {
         throw new NegocioException("Categoría de producto inválida");
     }
 
+    // Modificacion: pasa los datos del formulario a un producto que ya existe.
+    // "instanceof Alimento alimento" pregunta el tipo y, si coincide, ya lo convierte (Java 17).
     public void copiarA(Producto producto) {
         producto.setNombre(nombre);
         producto.setPrecio(precio);
@@ -61,6 +70,7 @@ public class ProductoFormulario {
         }
     }
 
+    // Lo contrario: llena el formulario con un producto guardado, para editarlo.
     public static ProductoFormulario desde(Producto producto) {
         ProductoFormulario f = new ProductoFormulario();
         f.tipo = producto.getCategoria();

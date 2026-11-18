@@ -13,6 +13,8 @@ import com.supermercado.dominio.Proveedor;
 import com.supermercado.servicio.NegocioException;
 import com.supermercado.servicio.ProveedorServicio;
 
+// CAPA DE CONTROLADORES
+// Pantallas de proveedores. Todas las direcciones empiezan con /proveedores.
 @Controller
 @RequestMapping("/proveedores")
 public class ProveedorControlador {
@@ -23,18 +25,23 @@ public class ProveedorControlador {
         this.proveedorServicio = proveedorServicio;
     }
 
+    // GET /proveedores : listado.
     @GetMapping
     public String listar(Model model) {
         model.addAttribute("proveedores", proveedorServicio.listar());
         return "proveedores/lista";
     }
 
+    // GET /proveedores/nuevo : formulario vacio.
     @GetMapping("/nuevo")
     public String nuevo(Model model) {
         model.addAttribute("proveedor", new Proveedor());
         return "proveedores/formulario";
     }
 
+    // POST /proveedores : recibe el formulario.
+    // @ModelAttribute: Spring crea un Proveedor y lo llena con los setters.
+    // BindingResult: si un dato no se puede convertir (letras en el DNI) queda anotado aca.
     @PostMapping
     public String guardar(@ModelAttribute("proveedor") Proveedor proveedor,
                           BindingResult resultado,
@@ -46,8 +53,10 @@ public class ProveedorControlador {
         }
         try {
             proveedorServicio.registrar(proveedor);
+            // Si sale bien redirige al listado con un mensaje (flash), asi al recargar no se reenvia el formulario.
             redirect.addFlashAttribute("mensaje", "Proveedor registrado correctamente");
             return "redirect:/proveedores";
+        // Si el servicio rechaza, vuelve al formulario con el error y los datos cargados.
         } catch (NegocioException e) {
             model.addAttribute("error", e.getMessage());
             return "proveedores/formulario";

@@ -16,6 +16,8 @@ import com.supermercado.servicio.ClienteServicio;
 import com.supermercado.servicio.NegocioException;
 import com.supermercado.servicio.VentaServicio;
 
+// CAPA DE CONTROLADORES
+// Pantallas de clientes: ABM, busqueda e historial de compras.
 @Controller
 @RequestMapping("/clientes")
 public class ClienteControlador {
@@ -28,6 +30,7 @@ public class ClienteControlador {
         this.ventaServicio = ventaServicio;
     }
 
+    // GET /clientes?buscar=texto : si viene "buscar" filtra por nombre, si no muestra todos.
     @GetMapping
     public String listar(@RequestParam(required = false) String buscar, Model model) {
         if (buscar != null && !buscar.isBlank()) {
@@ -45,6 +48,7 @@ public class ClienteControlador {
         return "clientes/formulario";
     }
 
+    // POST /clientes : alta de un cliente.
     @PostMapping
     public String guardar(@ModelAttribute("cliente") Cliente cliente,
                           BindingResult resultado,
@@ -64,6 +68,8 @@ public class ClienteControlador {
         }
     }
 
+    // GET /clientes/{id}/editar : @PathVariable toma el id de la direccion.
+    // clienteId le avisa al formulario que es una modificacion y no un alta.
     @GetMapping("/{id}/editar")
     public String editar(@PathVariable int id, Model model) {
         model.addAttribute("cliente", clienteServicio.buscarPorId(id));
@@ -71,6 +77,7 @@ public class ClienteControlador {
         return "clientes/formulario";
     }
 
+    // POST /clientes/{id} : guarda los cambios.
     @PostMapping("/{id}")
     public String actualizar(@PathVariable int id,
                              @ModelAttribute("cliente") Cliente datos,
@@ -93,6 +100,7 @@ public class ClienteControlador {
         }
     }
 
+    // Eliminar es un POST (un formulario), no un link: un GET no deberia cambiar datos.
     @PostMapping("/{id}/eliminar")
     public String eliminar(@PathVariable int id, RedirectAttributes redirect) {
         try {
@@ -104,6 +112,7 @@ public class ClienteControlador {
         return "redirect:/clientes";
     }
 
+    // GET /clientes/{id}/historial : compras del cliente.
     @GetMapping("/{id}/historial")
     public String historial(@PathVariable int id, Model model) {
         model.addAttribute("cliente", clienteServicio.buscarPorId(id));

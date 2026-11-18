@@ -16,6 +16,8 @@ import com.supermercado.servicio.NegocioException;
 import com.supermercado.servicio.ProductoServicio;
 import com.supermercado.servicio.ProveedorServicio;
 
+// CAPA DE CONTROLADORES
+// Pantallas de productos. Usa ProductoFormulario porque Producto es abstracta.
 @Controller
 @RequestMapping("/productos")
 public class ProductoControlador {
@@ -28,6 +30,8 @@ public class ProductoControlador {
         this.proveedorServicio = proveedorServicio;
     }
 
+    // La misma pagina sirve para buscar, filtrar por categoria o ver stock bajo,
+    // segun que parametro llegue en la direccion.
     @GetMapping
     public String listar(@RequestParam(required = false) String buscar,
                          @RequestParam(required = false) String categoria,
@@ -48,6 +52,7 @@ public class ProductoControlador {
         return "productos/lista";
     }
 
+    // GET /productos/nuevo?tipo=Alimento : el tipo decide que campos muestra el formulario.
     @GetMapping("/nuevo")
     public String nuevo(@RequestParam String tipo, Model model) {
         ProductoFormulario formulario = new ProductoFormulario();
@@ -66,6 +71,7 @@ public class ProductoControlador {
             return volverAlFormulario(model, null, "Revisá los datos: precio, stock y garantía tienen que ser números");
         }
         try {
+            // proveedorId es Integer: si no se eligio proveedor llega null y se pasa 0 (el servicio lo rechaza).
             int proveedorId = formulario.getProveedorId() == null ? 0 : formulario.getProveedorId();
             productoServicio.registrar(formulario.crearProducto(), proveedorId);
             redirect.addFlashAttribute("mensaje", "Producto registrado correctamente");
@@ -97,6 +103,7 @@ public class ProductoControlador {
                 throw new NegocioException("Elegí un proveedor para el producto");
             }
             Producto producto = productoServicio.buscarPorId(id);
+            // Se busca el producto guardado, se le copian los datos y se le asigna el proveedor elegido.
             formulario.copiarA(producto);
             producto.setProveedor(proveedorServicio.buscarPorId(formulario.getProveedorId()));
             productoServicio.modificar(producto);
@@ -118,6 +125,7 @@ public class ProductoControlador {
         return "redirect:/productos";
     }
 
+    // POST /productos/{id}/reponer : la cantidad viene del campo de la fila del listado.
     @PostMapping("/{id}/reponer")
     public String reponer(@PathVariable int id,
                           @RequestParam(defaultValue = "0") int cantidad,
@@ -131,6 +139,7 @@ public class ProductoControlador {
         return "redirect:/productos";
     }
 
+    // Vuelve al formulario con el error y carga de nuevo los proveedores del desplegable.
     private String volverAlFormulario(Model model, Integer productoId, String error) {
         model.addAttribute("error", error);
         model.addAttribute("productoId", productoId);

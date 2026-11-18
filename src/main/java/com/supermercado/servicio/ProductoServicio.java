@@ -9,6 +9,8 @@ import com.supermercado.dominio.Proveedor;
 import com.supermercado.dominio.Venta;
 import com.supermercado.repositorio.IRepositorio;
 
+// CAPA DE SERVICIO
+// Reglas de negocio de los productos: ABM, reponer, busquedas y filtros.
 public class ProductoServicio {
 
     private final IRepositorio<Producto> repoProductos;
@@ -23,18 +25,24 @@ public class ProductoServicio {
         this.repoVentas = repoVentas;
     }
 
+    // El proveedor es obligatorio: se busca por id y se asigna antes de validar.
     public void registrar(Producto producto, int proveedorId) {
+        if (proveedorId <= 0) {
+            throw new NegocioException("Elegí un proveedor para el producto");
+        }
         Proveedor proveedor = repoProveedores.consultar(Proveedor.class, proveedorId);
         producto.setProveedor(proveedor);
         validar(producto);
         repoProductos.guardar(producto);
     }
 
+    // El producto ya tiene id, asi que guardar lo actualiza.
     public void modificar(Producto producto) {
         validar(producto);
         repoProductos.guardar(producto);
     }
 
+    // No se borra un producto con ventas: quedarian ventas apuntando a nada.
     public void eliminar(int id) {
         boolean tieneVentas = repoVentas.listar(Venta.class).stream()
                 .anyMatch(v -> v.getProducto().getId() == id);
@@ -44,6 +52,7 @@ public class ProductoServicio {
         repoProductos.eliminar(Producto.class, id);
     }
 
+    // Operacion de negocio: sumar stock.
     public void reponer(int id, int cantidad) {
         if (cantidad <= 0) {
             throw new NegocioException("La cantidad a reponer tiene que ser mayor que cero");
@@ -65,6 +74,7 @@ public class ProductoServicio {
         return repoProductos.buscarPorNombre(Producto.class, texto);
     }
 
+    // Filtros con streams, como los de la Tienda del proyecto anterior.
     public List<Producto> filtrarPorCategoria(String categoria) {
         return listar().stream()
                 .filter(p -> p.getCategoria().equalsIgnoreCase(categoria))
@@ -77,6 +87,7 @@ public class ProductoServicio {
                 .collect(Collectors.toList());
     }
 
+    // Validacion de campos. Con BigDecimal se compara con compareTo (no con < o >).
     private void validar(Producto producto) {
         if (producto.getNombre() == null || producto.getNombre().isBlank()) {
             throw new NegocioException("El nombre es obligatorio");

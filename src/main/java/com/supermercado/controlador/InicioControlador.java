@@ -8,6 +8,8 @@ import com.supermercado.servicio.ClienteServicio;
 import com.supermercado.servicio.ProductoServicio;
 import com.supermercado.servicio.VentaServicio;
 
+// CAPA DE CONTROLADORES
+// Pagina de inicio con los contadores.
 @Controller
 public class InicioControlador {
 
@@ -15,6 +17,8 @@ public class InicioControlador {
     private final ClienteServicio clienteServicio;
     private final VentaServicio ventaServicio;
 
+    // Spring crea el controlador y le pasa los servicios (inyeccion por constructor).
+    // Los controladores nunca usan repositorios directamente: siempre pasan por los servicios.
     public InicioControlador(ProductoServicio productoServicio,
                              ClienteServicio clienteServicio,
                              VentaServicio ventaServicio) {
@@ -23,6 +27,7 @@ public class InicioControlador {
         this.ventaServicio = ventaServicio;
     }
 
+    // GET / : carga los datos en el Model y devuelve el nombre de la vista (templates/inicio.html).
     @GetMapping("/")
     public String inicio(Model model) {
         model.addAttribute("cantidadProductos", productoServicio.listar().size());

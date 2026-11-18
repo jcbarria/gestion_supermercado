@@ -5,10 +5,14 @@ import java.util.List;
 import com.supermercado.dominio.Proveedor;
 import com.supermercado.repositorio.IRepositorio;
 
+// CAPA DE SERVICIO
+// Reglas de negocio de los proveedores. Valida antes de llamar al repositorio.
 public class ProveedorServicio {
 
     private final IRepositorio<Proveedor> repositorio;
 
+    // El repositorio llega por el constructor (inyeccion de dependencias).
+    // Lo crea Spring en ConfiguracionSpring.
     public ProveedorServicio(IRepositorio<Proveedor> repositorio) {
         this.repositorio = repositorio;
     }
@@ -16,6 +20,8 @@ public class ProveedorServicio {
     public void registrar(Proveedor proveedor) {
         validar(proveedor);
 
+        // El DNI repetido se controla aca para mostrar un mensaje claro
+        // (la base tambien lo impide, pero con un error tecnico).
         boolean dniRepetido = repositorio.listar(Proveedor.class).stream()
                 .anyMatch(p -> p.getDni() == proveedor.getDni());
         if (dniRepetido) {

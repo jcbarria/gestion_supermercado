@@ -11,6 +11,8 @@ import com.supermercado.dominio.Venta;
 import com.supermercado.repositorio.IRepositorio;
 import com.supermercado.repositorio.VentaRepositorio;
 
+// CAPA DE SERVICIO
+// La operacion principal del negocio: vender.
 public class VentaServicio {
 
     private final VentaRepositorio repoVentas;
@@ -25,6 +27,9 @@ public class VentaServicio {
         this.repoProductos = repoProductos;
     }
 
+    // 1) valida la cantidad, 2) valida el stock, 3) valida el saldo.
+    // Si algo no cumple lanza NegocioException y no se guarda nada.
+    // Si todo esta bien, el repositorio registra la venta en una transaccion.
     public void vender(int clienteId, int productoId, int cantidad) {
         if (cantidad <= 0) {
             throw new NegocioException("La cantidad tiene que ser mayor que cero");
@@ -38,6 +43,7 @@ public class VentaServicio {
                     + ". Pedido: " + cantidad + " | Disponible: " + producto.getStock());
         }
 
+        // Se guarda el precio actual: si despues cambia, la venta mantiene este.
         BigDecimal precioUnitario = producto.getPrecio();
         BigDecimal total = precioUnitario.multiply(BigDecimal.valueOf(cantidad));
 
@@ -53,6 +59,7 @@ public class VentaServicio {
         return repoVentas.listar(Venta.class);
     }
 
+    // Historial de compras: todas las ventas de ese cliente.
     public List<Venta> historialDeCliente(int clienteId) {
         return listar().stream()
                 .filter(v -> v.getCliente().getId() == clienteId)

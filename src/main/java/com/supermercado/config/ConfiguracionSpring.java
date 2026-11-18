@@ -15,9 +15,14 @@ import com.supermercado.servicio.ProductoServicio;
 import com.supermercado.servicio.ProveedorServicio;
 import com.supermercado.servicio.VentaServicio;
 
+// CONFIGURACION DE SPRING
+// Aca se le dice a Spring como crear los repositorios y los servicios.
+// Cada metodo @Bean crea un componente UNA vez al arrancar. Si un metodo recibe parametros,
+// Spring le pasa los componentes que ya creo (los busca por tipo): eso es la inyeccion de dependencias.
 @Configuration
 public class ConfiguracionSpring {
 
+    // Nombre de la unidad de persistencia definida en persistence.xml.
     private static final String UNIDAD = "Programacion2";
 
     // Repositorios

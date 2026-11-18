@@ -17,6 +17,9 @@ import com.supermercado.servicio.NegocioException;
 import com.supermercado.servicio.ProductoServicio;
 import com.supermercado.servicio.VentaServicio;
 
+// Pruebas por consola que se usaron antes de tener la aplicacion web.
+// Ya no hace falta para usar el sistema (arranca SupermercadoApplication),
+// pero sirve para mostrar como se probo la persistencia y las reglas del negocio.
 public class Main {
     public static void main(String[] args) {
         inicializarTablas();

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 
+<!-- Fragmentos: partes que se repiten en todas las paginas. Se usan con th:replace. -->
+<!-- head: titulo de la pagina y Bootstrap (se carga desde internet) -->
 <head th:fragment="head(titulo)">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,6 +12,7 @@
 
 <body>
 
+<!-- navbar: el menu de navegacion -->
 <nav th:fragment="navbar" class="navbar navbar-expand navbar-dark bg-success">
     <div class="container">
         <a class="navbar-brand" href="/">Supermercado</a>
@@ -22,6 +25,7 @@
     </div>
 </nav>
 
+<!-- mensajes: alerta verde de confirmacion o roja de error. th:if la muestra solo si hay mensaje. -->
 <div th:fragment="mensajes">
     <div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
     <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>

@@ -5,11 +5,14 @@ import javax.jdo.annotations.Inheritance;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 
+// CAPA DE DOMINIO
+// Subclase de Producto. Se guarda en la tabla PRODUCTO, columnas MARCA y GARANTIA.
 @PersistenceCapable(detachable = "true")
 @Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)
 
 public class Electronica extends Producto {
     private String marca;
+    // Garantia en meses.
     private int garantia;
 
     public Electronica(String nombre, BigDecimal precio, int stock, int stockMinimo, String marca, int garantia) {
@@ -18,6 +21,7 @@ public class Electronica extends Producto {
         this.garantia = garantia;
     }
 
+    // Constructor vacio para JDO.
     public Electronica() {
     }
 
@@ -47,6 +51,7 @@ public class Electronica extends Producto {
         this.garantia = garantia;
     }
 
+    // Coincide con el valor que usan el filtro y el formulario.
     @Override
     public String getCategoria() {
         return "Electronica";

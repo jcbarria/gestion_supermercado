@@ -10,17 +10,26 @@ import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Query;
 import javax.jdo.Transaction;
 
+// CAPA DE REPOSITORIO
+// Acceso a datos con JDO, basado en el repositorio del profe.
+// Todos los metodos siguen el mismo patron: abrir el PersistenceManager, begin,
+// la operacion, commit, rollback si hay error y close en el finally.
 public class Repositorio<T> implements IRepositorio<T> {
 
+    // La PersistenceManagerFactory se crea UNA sola vez y la comparten todos los repositorios.
+    // static: el mapa es uno solo para toda la aplicacion.
     private static final Map<String, PersistenceManagerFactory> fabricas = new HashMap<>();
 
+    // protected para que VentaRepositorio (subclase) la pueda usar.
     protected final PersistenceManagerFactory pmf;
 
     public Repositorio(String persistenceUnit) {
+        // Si ya existe la fabrica de esa unidad la reutiliza; si no, la crea.
         this.pmf = fabricas.computeIfAbsent(persistenceUnit,
             unidad -> JDOHelper.getPersistenceManagerFactory(unidad));
     }
 
+    // Si el objeto es nuevo lo inserta. Si ya tiene id (detached) lo actualiza.
     @Override
     public void guardar(T objeto) {
 
@@ -128,6 +137,9 @@ public class Repositorio<T> implements IRepositorio<T> {
         }
     }
 
+    // Busca por id. setDetachAllOnCommit deja el objeto "separado" (detached):
+    // se puede usar despues de cerrar el PM, por ejemplo en las vistas.
+    // Si se modifica y se vuelve a guardar, JDO actualiza la fila (asi funciona modificar).
     @Override
     public T consultar(Class<T> clase, int id) {
         PersistenceManager pm = pmf.getPersistenceManager();
@@ -154,6 +166,7 @@ public class Repositorio<T> implements IRepositorio<T> {
 
     }
 
+    // Guarda varios objetos en una misma transaccion.
     @Override
     public void guardar(List<T> objetos) {
         PersistenceManager pm = pmf.getPersistenceManager();
@@ -180,6 +193,7 @@ public class Repositorio<T> implements IRepositorio<T> {
         }
     }
 
+    // Trae todos los objetos de una clase (incluye sus subclases).
     @Override
     public List<T> listar(Class<T> clase) {
               PersistenceManager pm =
@@ -243,6 +257,7 @@ public class Repositorio<T> implements IRepositorio<T> {
 
     }
 
+    // Primero hay que buscar el objeto: JDO borra objetos, no ids.
     @Override
     public void eliminar(Class<T> clase, int id) {
         PersistenceManager pm = pmf.getPersistenceManager();
@@ -263,6 +278,8 @@ public class Repositorio<T> implements IRepositorio<T> {
         }
     }
 
+    // Consulta JDOQL: el nombre contiene el texto, sin importar mayusculas.
+    // Es como un LIKE '%texto%' en SQL. :texto es un parametro de la consulta.
     @Override
     public List<T> buscarPorNombre(Class<T> clase, String texto) {
         PersistenceManager pm = pmf.getPersistenceManager();

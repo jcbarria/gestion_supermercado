@@ -13,6 +13,8 @@ import com.supermercado.servicio.NegocioException;
 import com.supermercado.servicio.ProductoServicio;
 import com.supermercado.servicio.VentaServicio;
 
+// CAPA DE CONTROLADORES
+// Pantalla de venta y listado de ventas.
 @Controller
 @RequestMapping("/ventas")
 public class VentaControlador {
@@ -41,6 +43,9 @@ public class VentaControlador {
         return "ventas/formulario";
     }
 
+    // POST /ventas : recibe cliente, producto y cantidad del formulario.
+    // Son Integer para que un campo vacio llegue como null y se pueda avisar con un mensaje.
+    // Toda la logica (stock, saldo y transaccion) esta en VentaServicio.vender.
     @PostMapping
     public String vender(@RequestParam(required = false) Integer clienteId,
                          @RequestParam(required = false) Integer productoId,
@@ -56,6 +61,7 @@ public class VentaControlador {
             return "redirect:/ventas";
         } catch (NegocioException e) {
             model.addAttribute("error", e.getMessage());
+            // Si falla, vuelve al formulario con lo que se habia elegido.
             model.addAttribute("clienteId", clienteId);
             model.addAttribute("productoId", productoId);
             model.addAttribute("cantidad", cantidad);
